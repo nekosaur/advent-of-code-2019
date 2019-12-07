@@ -1,0 +1,26 @@
+{
+  "name": "advent-of-code-2019",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "ts-node",
+    "day": "yarn dev ./index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekosaur/advent-of-code-2019.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nekosaur/advent-of-code-2019/issues"
+  },
+  "homepage": "https://github.com/nekosaur/advent-of-code-2019#readme",
+  "dependencies": {
+    "@types/node": "^12.12.14",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.3"
+  }
+}
