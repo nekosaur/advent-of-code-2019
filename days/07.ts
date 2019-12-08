@@ -208,7 +208,7 @@ const solve = (p: number[]) => {
 }
 
 const part_one = () => console.log('What is the highest signal that can be sent to the thrusters?', solve([0, 1, 2, 3, 4]))
-const part_two = () => console.log('What is the highest signal that can be sent to the thrusters? (loop)', solve([5, 6, 7, 8, 9]))
+const part_two = () => console.log('What is the highest signal that can be sent to the thrusters? (feedback loop)', solve([5, 6, 7, 8, 9]))
 
 export {
   part_one,
