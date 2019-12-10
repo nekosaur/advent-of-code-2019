@@ -100,12 +100,12 @@ const find_unobstructed_asteroids_naive = (asteroids: Asteroid[]) => {
 }
 
 const rad2deg = (r: number) => r * 180 / Math.PI
-const vec = (a: Point, b: Point) => ({ x: b.x - a.x, y: b.y - a.y })
-const vec2rad = (v: Point) => {
+const vec = (a: Point, b: Point): Point => ({ x: b.x - a.x, y: b.y - a.y })
+const vec2rad = (v: Point): number => {
   const r = Math.atan2(v.y, v.x) - Math.atan2(-1, 0)
   return r < 0 ? r + 2 * Math.PI : r
 }
-const vec2deg = (v: Point) => rad2deg(vec2rad(v))
+const vec2deg = (v: Point): number => rad2deg(vec2rad(v))
 
 const sort_around_origin = (asteroids: Asteroid[], origin: Point) => {
   return [...asteroids].sort((a, b) => {
@@ -121,16 +121,20 @@ const sort_around_origin = (asteroids: Asteroid[], origin: Point) => {
 
 const find_unobstructed_asteroids = (asteroids: Asteroid[], origin: Asteroid) => {
   const unobstructed = []
-  const sorted = sort_around_origin(asteroids, origin)
 
   let lastAngle = null
-  for (let i = 0; i < sorted.length; i++) {
-    const candidate = sorted[i]
+  for (let i = 0; i < asteroids.length; i++) {
+    const candidate = asteroids[i]
 
     if (origin.id === candidate.id) continue
 
     const angle = vec2deg(vec(origin, candidate))
 
+    // Since asteroids are sorted on their angle
+    // relative to origin, asteroids on the same
+    // line will be processed in a row, and thus
+    // we can skip any asteroid with equal angle
+    // to the previous one.
     if (lastAngle === angle) {
       continue
     } else {
@@ -142,41 +146,53 @@ const find_unobstructed_asteroids = (asteroids: Asteroid[], origin: Asteroid) =>
   return unobstructed
 }
 
-const part_one = () => {
-  let max = []
-  for (const origin of asteroids) {
-    const unobstructed = find_unobstructed_asteroids(asteroids, origin)
-
-    if (unobstructed.length > max.length) {
-      max = unobstructed
-    }
-  }
-
-  console.log('How many other asteroids can be detected from that location?', max.length)
+interface Best {
+  sorted: Asteroid[]
+  max: number
+  origin: Asteroid | null
 }
 
-const part_two = () => {
-  const target = 200
-  let max = []
-  let p = null
-  let asteroids_left = asteroids.slice()
-  for (const origin of asteroids) {
-    const unobstructed = find_unobstructed_asteroids(asteroids, origin)
+const solve = () => {
+  let best: Best = {
+    sorted: [],
+    max: 0,
+    origin: null
+  }
 
-    if (unobstructed.length > max.length) {
-      max = unobstructed
-      p = origin
+  for (const origin of asteroids) {
+    const sorted = sort_around_origin(asteroids, origin)
+    const unobstructed = find_unobstructed_asteroids(sorted, origin)
+
+    if (unobstructed.length > best.max) {
+      best = {
+        sorted,
+        max: unobstructed.length,
+        origin,
+      }
     }
   }
 
-  if (!p) throw new Error('Could not find optimal asteroid')
+  return best
+}
+
+const part_one = () => {
+  const { max } = solve()
+
+  console.log('How many other asteroids can be detected from that location?', max)
+}
+
+
+const part_two = (target = 200) => {
+  const best = solve()
+
+  if (!best.origin) throw new Error('Could not find optimal asteroid')
 
   let blasted: Asteroid[] = []
 
   while (blasted.length < target) {
-    const unobstructed = find_unobstructed_asteroids(asteroids_left, p)
-    blasted = [...blasted, ...unobstructed]
-    asteroids_left = asteroids.filter(a => !unobstructed.includes(a))
+    const unobstructed = find_unobstructed_asteroids(best.sorted, best.origin)
+    blasted = blasted.concat(unobstructed)
+    best.sorted = best.sorted.filter(a => !unobstructed.includes(a))
   }
 
   console.log('The Elves are placing bets on which will be the 200th asteroid to be vaporized.', (blasted[target - 1].x * 100) + blasted[target - 1].y)
