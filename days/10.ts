@@ -183,16 +183,16 @@ const part_one = () => {
 
 
 const part_two = (target = 200) => {
-  const best = solve()
+  let { sorted, origin } = solve()
 
-  if (!best.origin) throw new Error('Could not find optimal asteroid')
+  if (!origin) throw new Error('Could not find optimal asteroid')
 
   let blasted: Asteroid[] = []
 
   while (blasted.length < target) {
-    const unobstructed = find_unobstructed_asteroids(best.sorted, best.origin)
+    const unobstructed = find_unobstructed_asteroids(sorted, origin)
     blasted = blasted.concat(unobstructed)
-    best.sorted = best.sorted.filter(a => !unobstructed.includes(a))
+    sorted = sorted.filter(a => !unobstructed.includes(a))
   }
 
   console.log('The Elves are placing bets on which will be the 200th asteroid to be vaporized.', (blasted[target - 1].x * 100) + blasted[target - 1].y)
