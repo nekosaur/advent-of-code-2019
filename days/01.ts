@@ -99,7 +99,7 @@ const input = `137654
 130460
 54479`
 
-const fuel = input.split("\n").map(m => parseInt(m, 10))
+const modules = input.split("\n").map(m => parseInt(m, 10))
 
 const calculate_fuel_a = (mass: number) => Math.floor(mass / 3) - 2
 
@@ -119,12 +119,12 @@ const calculate_fuel_b = (mass: number) => {
 
 const part_one = () => console.log(
   'What is the sum of the fuel requirements for all of the modules on your spacecraft?',
-  fuel.map(calculate_fuel_a).reduce((a, b) => a + b, 0)
+  modules.map(calculate_fuel_a).reduce((a, b) => a + b, 0)
 )
 
 const part_two = () => console.log(
   'What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel?',
-  fuel.map(calculate_fuel_b).reduce((a, b) => a + b, 0)
+  modules.map(calculate_fuel_b).reduce((a, b) => a + b, 0)
 )
 
 export {
