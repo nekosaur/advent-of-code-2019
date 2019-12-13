@@ -7,10 +7,22 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
   integrity sha512-u/SJDyXwuihpwjXy7hOOghagLEV1KdAST6syfnOk6QZAMzZuWZqXy5aYYZbh8Jdpd4escVFP0MvftHNDb9pruA==
 
+ansi@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/ansi/-/ansi-0.3.1.tgz#0c42d4fb17160d5a9af1e484bace1c66922c1b21"
+  integrity sha1-DELU+xcWDVqa8eSEus4cZpIsGyE=
+
 arg@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/arg/-/arg-4.1.2.tgz#e70c90579e02c63d80e3ad4e31d8bfdb8bd50064"
   integrity sha512-+ytCkGcBtHZ3V2r2Z06AncYO8jz46UEamcspGoU8lHcEbpn6J77QK0vdWvChsclg/tM5XIJC5tnjmPp7Eq6Obg==
+
+axel@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/axel/-/axel-0.0.3.tgz#74c8f75d37d82af665e8030a13d3a36cda001215"
+  integrity sha1-dMj3XTfYKvZl6AMKE9OjbNoAEhU=
+  dependencies:
+    ansi "^0.3.0"
 
 buffer-from@^1.0.0:
   version "1.1.1"
