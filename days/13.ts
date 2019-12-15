@@ -200,7 +200,7 @@ const BALL_X_INDEX = 3033
 const solve = () => {
   const { it, memory } = computer()
 
-  ctx.clear();
+  ctx.clear()
 
   let score = 0
 
