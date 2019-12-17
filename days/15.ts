@@ -207,7 +207,7 @@ const create_range = (range: number): any[] => [...Array(range).keys()]
 
 const create_map = () => {
   const stack: { pos: Point, state: State, dist: number }[] = []
-  const path = []
+  const tiles: Point[] = []
   const visited: Record<string, boolean> = {}
 
   stack.push({ pos: { x: 0, y: 0 }, state: { memory: INPUT.split(',').map(v => parseInt(v, 10)) }, dist: 0 })
@@ -220,7 +220,7 @@ const create_map = () => {
 
     if (!current) continue
 
-    path.push(current.pos)
+    tiles.push(current.pos)
     visited[id(current.pos)] = true
 
     const { it, get_state } = computer(current.state)
@@ -252,7 +252,7 @@ const create_map = () => {
     }
   }
 
-  return { path, goal, dist }
+  return { tiles, goal, dist }
 }
 
 const render_map = (tiles: Point[], start: Point, goal: Point) => {
@@ -275,14 +275,58 @@ const render_map = (tiles: Point[], start: Point, goal: Point) => {
 }
 
 const part_one = () => {
-  const { path, goal, dist } = create_map()
+  const { tiles, goal, dist } = create_map()
 
-  render_map(path, { x: 0, y: 0 }, goal)
+  render_map(tiles, { x: 0, y: 0 }, goal)
 
   console.log('What is the fewest number of movement commands required to move the repair droid from its starting position to the location of the oxygen system?', dist)
 }
 
-const part_two = () => {}
+const find_neighbours = (tiles: Point[], pos: Point) => {
+  const ids = [
+    id(move(pos, 0)),
+    id(move(pos, 1)),
+    id(move(pos, 2)),
+    id(move(pos, 3))
+  ]
+
+  return tiles.filter(t => ids.includes(id(t)))
+}
+
+const find_longest_path = (tiles: Point[], start: Point) => {
+  const queue: { pos: Point, dist: number }[] = []
+  const visited: Record<string, boolean> = {}
+  let longest = 0
+
+  queue.push({ pos: start, dist: 0 })
+
+  while (queue.length) {
+    const current = queue.shift()
+
+    if (!current) continue
+
+    visited[id(current.pos)] = true
+
+    for (const n of find_neighbours(tiles, current.pos)) {
+      if (visited[id(n)] === true) continue
+      queue.push({ pos: n, dist: current.dist + 1 })
+
+      if (current.dist + 1 > longest) {
+        longest = current.dist + 1
+      }
+    }
+  }
+
+  return longest
+}
+
+const part_two = () => {
+  const { tiles, goal } = create_map()
+
+  const minutes = find_longest_path(tiles, goal)
+
+  console.log('How many minutes will it take to fill with oxygen?', minutes)
+}
 
 export {
   part_one,
